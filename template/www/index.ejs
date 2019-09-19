@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Home</title>
+	<link rel="stylesheet" href="<%=HTTP_ROOT%>/css/style.css">
+	<link rel="stylesheet" href="<%=HTTP_ROOT%>/css/base.css">
+	<link rel="stylesheet" href="<%=HTTP_ROOT%>/css/normalize.css">
+</head>
+
+<body>
+	<div>
+		<div class="main" id="main">
+			<div class="banner" id="banner">
+				<%banners.forEach((banner,index)=>{%>
+				<a href="<%=banner.href%>" class="banner-slide <%if(index=0){%>slide-active<%}%>">
+				<img src="<%=HTTP_ROOT%>/upload/<%=banner.src%>" class="slide">
+				</a>
+				<%})%>
+			</div>
+			<a href="javascript:void(0)" class="button prev" id="prev"></a>
+			<a href="javascript:void(0)" class="button next" id="next"></a>
+		</div>
+		<div class="catalog-container">
+			<ul>
+				<%catalog.forEach(item=>{%>
+				<li><%=item.title%></li>
+				<%})%>
+			</ul>
+		</div>
+		<p></p>
+		<script src="<%=HTTP_ROOT%>/js/script.js"></script>
+	</div>
+</body>
+
+</html>

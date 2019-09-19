@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><%page_types.forEach(item=>{if(type==item.type){%><%=item.title%><%}})%></title>
+    <link rel="stylesheet" href="<%=HTTP_ROOT%>/css/admin.css">
+</head>
+
+<body>
+    <nav class="nav">
+        <%page_types.forEach(item=>{%>
+        <a href="/admin/<%=item.type%>" class="<%if(type==item.type){%>active<%}%>"><%=item.title%></a>
+        <%})%>
+    </nav>
+    <main class=" main">
+            <div class="add-table">
+                <table>
+                    <tr>
+                        <td class="cover-title">添加</td>
+                    </tr>
+                    <form action="<%=HTTP_ROOT%>/admin/<%=type%>" method="POST" enctype="multipart/form-data">
+                        <%fields.forEach(field=>{%>
+                        <tr>
+                            <td width='160' style="text-align: right"><%=field.title%></td>
+                            <td width='300'>
+                                <%if(field.type == 'textarea'){%>
+                                <textarea rows="20" class="panel-input" name="<%=field.name%>"
+                                    placeholder="<%=field.title%>"></textarea>
+                                <%}else if(field.type == 'select'){%>
+                                <select class="panel-input" name="<%=field.name%>">
+                                    <%field.items.forEach(item=>{%>
+                                    <option value="<%=item.id%>"><%=item.title%></option>
+                                    <%})%>
+                                </select>
+                                <%}else{%>
+                                <input class="panel-input" type="<%=field.type%>" name="<%=field.name%>">
+                                <%}%>
+                            </td>
+                        </tr>
+                        <%})%>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit">确认</button>
+                                <a href="javascript:0" id="close-btn">取消</a>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+            </div>
+            <button id="addbtn">添加+</button>
+            <table class="content">
+                <tr class="th">
+                    <td>ID</td>
+                    <%fields.forEach(item=>{
+                        if(item.title !== '内容'){%>
+                    <td><%=item.title%></td>
+                    <%}})%>
+                    <td>操作</td>
+                </tr>
+                <%datas.forEach( data =>{%>
+                <tr height='40'>
+                    <%for(x in data){if(x != 'content'){%>
+                    <td><%=data[x]%></td>
+                    <%}}%>
+                    <td>
+                        <a href="<%=HTTP_ROOT%>/admin/<%=type%>/delete/<%=data.id%>"
+                            onclick="return confirm('确定删除吗？')">删除
+                        </a>
+                        <a href="javascript:0" class="modify-btn" data-id="<%=data.id%>">修改</a>
+                    </td>
+                </tr>
+                <%})%>
+            </table>
+            </main>
+            <script src="<%=HTTP_ROOT%>/js/jquery-1.7.1.min.js"></script>
+            <script>
+                let box = document.querySelector('.add-table');
+                let addbtn = document.getElementById('addbtn');
+                let closeBtn = document.getElementById('close-btn');
+
+                addbtn.onclick = function () {
+                    box.style.display = 'block';
+                    backData();
+                }
+                closeBtn.onclick = function () {
+                    box.style.display = 'none';
+                }
+                let HTTP_ROOT = '<%=HTTP_ROOT%>';
+                let page_type = '<%=type%>';
+                $('.modify-btn').click(async function () {
+                    let id = this.dataset.id;
+                    let url = `${HTTP_ROOT}/admin/${page_type}/get/${id}`;
+
+                    let data = await $.ajax({
+                        url,
+                        dataType: 'json'
+                    })
+                    let old_data = data.data;
+                    $('.cover-title').html('修改');
+                    $('.add-table form').attr('action', `${HTTP_ROOT}/admin/${page_type}/modify/${id}`);
+                    box.style.display = 'block';
+                    $('.panel-input').each(function () {
+                        if (old_data[this.name] != undefined) {
+                            try {
+                                if (this.type == 'date') {
+                                    let oDate = new Date(old_data[this.name] * 1000);
+                                    let month = oDate.getMonth() + 1;
+                                    if (month.toString().length === 1) {
+                                        month = '0' + month.toString();
+                                    }
+                                    let day = oDate.getDate();
+                                    if (day.toString().length === 1) {
+                                        day = '0' + day.toString();
+                                    }
+                                    this.value = `${oDate.getFullYear()}-${month}-${day}`;
+                                } else {
+                                    this.value = old_data[this.name];
+                                }
+                            } catch (e) {
+                            }
+                        }
+                    })
+                })
+                function backData() {
+                    $('.cover-title').html('添加');
+                    $('.add-table from').attr('action', `${HTTP_ROOT}/admin/${page_type}`);
+                    $('.panel-input').each(function () {
+                        this.value = '';
+                    })
+                }
+            </script>
+</body>
+
+</html>

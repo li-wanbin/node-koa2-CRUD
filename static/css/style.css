@@ -1,0 +1,79 @@
+
+body{
+	font-family:"微软雅黑";
+	color: #14191e;
+	display: flex;
+	justify-content: center;
+}
+
+.main{
+	width:1200px;
+	height:460px;
+	margin:30px auto;
+	position:relative;
+	overflow:hidden;
+}
+
+.banner{
+	width:1200px;
+	height:460px;
+	overflow:hidden;
+	position:relative;
+	background-color: lightblue;
+}
+.banner a{
+	display: block;
+	float:left;
+	width: 100%;
+	height: 100%;
+}
+.banner-slide{
+	width:1200px;
+	height:460px;
+	display:none;
+}
+
+.slide-active{
+	display:block;
+}
+.slide{
+	width: 100%;
+}
+.button{
+    position: absolute;
+    transform:rotate(180deg);
+    top: 50%;
+    left: 0;
+    height: 80px;
+    width: 40px;
+    margin-top:-40px;
+    background:url(../img/arrow.png) center center no-repeat;
+}
+
+.next{
+	transform:rotate(0deg);
+	left:auto;
+	right:0;
+}
+
+.button:hover{
+	background-color:#333;
+	opacity: 0.8;
+	filter:alpha(opacity=80);
+}
+
+
+
+/* catalog */
+
+.catalog-container{
+	height: 40px;
+}
+.catalog-container ul{
+	display: flex;
+	color: #14191e;
+	font-size: 14px;
+}
+.catalog-container ul li{
+	padding: 0 30px;
+}
