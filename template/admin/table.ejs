@@ -62,8 +62,22 @@
                 <%datas.forEach( data =>{%>
                 <tr height='40'>
                     <%for(x in data){if(x != 'content'){%>
+                        <%if(x == 'created_time'){
+                            let oDate = new Date(data[x] * 1000);
+                            let month = oDate.getMonth() + 1;
+                            if (month.toString().length === 1) {
+                                month = '0' + month.toString();
+                            }
+                            let day = oDate.getDate();
+                            if (day.toString().length === 1) {
+                                day = '0' + day.toString();
+                            }
+                            let value = `${oDate.getFullYear()}-${month}-${day}`;%>
+
+                    <td><%=value%></td>
+                        <%}else{%>
                     <td><%=data[x]%></td>
-                    <%}}%>
+                    <%}}}%>
                     <td>
                         <a href="<%=HTTP_ROOT%>/admin/<%=type%>/delete/<%=data.id%>"
                             onclick="return confirm('确定删除吗？')">删除

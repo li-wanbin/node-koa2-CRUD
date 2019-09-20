@@ -31,13 +31,13 @@ server.context.config = config;
 let router = new Router();
 
 //统一错误处理
-router.use(async (ctx, next) => {
-    try {
-        await next();
-    } catch (e) {
-        ctx.throw(500, 'Internal Server Error.');
-    }
-})
+// router.use(async (ctx, next) => {
+//     try {
+//         await next();
+//     } catch (e) {
+//         ctx.throw(500, 'Internal Server Error.');
+//     }
+// })
 
 
 router.use('/admin', require('./routers/admin'));
